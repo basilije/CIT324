@@ -74,18 +74,6 @@ void bleNotify(BLECharacteristic* ble_characteristic, float value) {
   ble_characteristic->notify();
 }
 
-/***********************************************************************************
-* Purpose: Updates a Bluetooth characteristics with a global values
-* Arguments: None
-* Returns: None
-**********************************************************************************/
-void setCharacteristics() {
-  p_temp_characteristic->setValue(temp);
-  p_press_characteristic->setValue(pres);
-  p_alc_characteristic->setValue(alco);
-}
-
-
 void setup() {
   // seed the RNG
   randomSeed(analogRead(0));
@@ -103,7 +91,7 @@ void setup() {
   p_service = p_server->createService(SERVICE_UUID); 
 
   // create BLE characteristics for each service
-  p_temp_characteristic = p_service->createCharacteristic (TEMPERATURE_DEG_C_UUID,
+  p_temp_characteristic = p_service->createCharacteristic(TEMPERATURE_DEG_C_UUID,
                           BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
   p_press_characteristic = p_service->createCharacteristic(BAROMETRIC_PRESSURE_KPA_UUID,
                           BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
@@ -115,8 +103,10 @@ void setup() {
   pres = 100;
   alco = 62.5;  
 
-  // set initial values for the BLE characteristics
-  setCharacteristics();
+  // set the BLE characteristics values
+  p_temp_characteristic->setValue(temp);
+  p_press_characteristic->setValue(pres);
+  p_alc_characteristic->setValue(alco);
 
   // start the sensor service
   p_service->start();
