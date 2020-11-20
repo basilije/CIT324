@@ -116,7 +116,6 @@ void setup() {
   p_advertising->start();
 }
 
-
 void loop() {
   // Pause one second
   delay(1000);
