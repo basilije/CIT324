@@ -86,7 +86,7 @@ void setup() {
   p_press_characteristic = p_service->createCharacteristic("550b2179-13b3-4f70-a841-2c4765038de6", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
   p_alc_characteristic = p_service->createCharacteristic("c953dc94-c6ff-4336-82ed-873c2c9fc3e4", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
 
-  // get the initial values for the BLE characteristics
+  // set the initial values for the BLE characteristics
   temp = 17;
   pres = 100;
   alco = 62.5;  
