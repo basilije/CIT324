@@ -78,7 +78,7 @@ void setup() {
   // create the BLE server
   p_server = p_device.createServer();
 
-  // create BLE services
+  // create BLE service
   p_service = p_server->createService("26586ab7-3a39-401b-b26e-b521a84e5a2c"); 
 
   // create BLE characteristics for each service
