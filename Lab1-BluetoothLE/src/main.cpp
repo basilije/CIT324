@@ -3,20 +3,11 @@
 #include <BLEUtils.h>
 #include <BLEServer.h>
 
-// define the constants
-#define SERVICE_UUID "26586ab7-3a39-401b-b26e-b521a84e5a2c"
-#define TEMPERATURE_DEG_C_UUID "e5a8ec67-3b68-4faf-a615-0d5628a39c3f"
-#define BAROMETRIC_PRESSURE_KPA_UUID "550b2179-13b3-4f70-a841-2c4765038de6"
-#define ALCOHOL_CONTENT_PCT_ABV_UUID "c953dc94-c6ff-4336-82ed-873c2c9fc3e4"
-
 // initialize the global variables
 BLEDevice p_device;
-BLEServer* p_server;
-BLEService* p_service;
-BLEAdvertising* p_advertising;
-BLECharacteristic* p_temp_characteristic;
-BLECharacteristic* p_press_characteristic;
-BLECharacteristic* p_alc_characteristic;
+BLEServer *p_server;
+BLEService *p_service;
+BLECharacteristic *p_temp_characteristic, *p_press_characteristic, *p_alc_characteristic;
 float temp, pres, alco;
 
 /***********************************************************************************
@@ -88,15 +79,12 @@ void setup() {
   p_server = p_device.createServer();
 
   // create BLE services
-  p_service = p_server->createService(SERVICE_UUID); 
+  p_service = p_server->createService("26586ab7-3a39-401b-b26e-b521a84e5a2c"); 
 
   // create BLE characteristics for each service
-  p_temp_characteristic = p_service->createCharacteristic(TEMPERATURE_DEG_C_UUID,
-                          BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  p_press_characteristic = p_service->createCharacteristic(BAROMETRIC_PRESSURE_KPA_UUID,
-                          BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
-  p_alc_characteristic = p_service->createCharacteristic(ALCOHOL_CONTENT_PCT_ABV_UUID,
-                          BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+  p_temp_characteristic = p_service->createCharacteristic("e5a8ec67-3b68-4faf-a615-0d5628a39c3f", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+  p_press_characteristic = p_service->createCharacteristic("550b2179-13b3-4f70-a841-2c4765038de6", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
+  p_alc_characteristic = p_service->createCharacteristic("c953dc94-c6ff-4336-82ed-873c2c9fc3e4", BLECharacteristic::PROPERTY_READ | BLECharacteristic::PROPERTY_NOTIFY);
 
   // get the initial values for the BLE characteristics
   temp = 17;
@@ -108,12 +96,9 @@ void setup() {
   p_press_characteristic->setValue(pres);
   p_alc_characteristic->setValue(alco);
 
-  // start the sensor service
+  // start the server service and advertising BLE device
   p_service->start();
-
-  // start advertising the BLE device
-  p_advertising = p_server->getAdvertising();
-  p_advertising->start();
+  p_server->getAdvertising()->start();
 }
 
 void loop() {
